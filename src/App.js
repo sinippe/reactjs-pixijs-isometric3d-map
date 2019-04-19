@@ -6,7 +6,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mapDataFile: "grand_canyon_200.json"
+      mapDataFile: "lyon.json"
     };
   }
 
