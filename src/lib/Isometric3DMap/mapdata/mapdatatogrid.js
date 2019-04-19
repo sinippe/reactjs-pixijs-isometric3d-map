@@ -32,7 +32,7 @@ class MapDataToGrid {
       return { x, y, height };
     });
   }
-  getData() {
+  getGrid() {
     return this.convertedData;
   }
 
