@@ -7,15 +7,18 @@ class MapDataToGrid {
    */
   constructor(data) {
     const rawData = data;
-    // storing values
+    // longitudes
     const longitudes = this.reduceArray(rawData, "longitude");
+    // sorting longitudes in ascending order (West to East)
     longitudes.sort((a, b) => a - b);
     this.width = longitudes.length;
 
+    // sorting latitudes in descending order (North to South)
     const latitudes = this.reduceArray(rawData, "latitude");
-    latitudes.sort((a, b) => a - b);
+    latitudes.sort((a, b) => b - a);
     this.height = latitudes.length;
 
+    // sorting elevations in ascending order
     const elevations = this.reduceArray(rawData, "elevation");
     elevations.sort((a, b) => a - b);
     // calculating elevation ratio
