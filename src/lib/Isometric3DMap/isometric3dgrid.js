@@ -13,7 +13,7 @@ class Isometric3DGrid {
     this.app.stage.addChild(this.container);
     this.killing = false;
     this.grid = new Grid(this.app, this.container);
-    this.container.scale.x = this.container.scale.y = 0.7;
+    this.container.scale.x = this.container.scale.y = 0.5;
     this.populateGrid();
 
     this.initMouseListeners();
@@ -66,8 +66,7 @@ class Isometric3DGrid {
 
   populateGrid() {
     const map = new MapDataToGrid(this.params.data);
-    // the value "0.26" just appears to be OK on desktop & mobiles
-    const scaledMap = map.scaleGrid(0.26);
+    const scaledMap = map.getGrid();
 
     const mapLength = scaledMap.length;
     for (let i = 0; i < mapLength; i++) {
