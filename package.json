@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "http://sinippe.com/isometric",
   "dependencies": {
+    "classnames": "^2.2.6",
     "gsap": "^2.1.2",
     "mobile-device-detect": "^0.2.3",
     "pixi.js": "^4.8.7",
