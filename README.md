@@ -18,11 +18,11 @@ More infos on Github: https://github.com/Jorl17/open-elevation/blob/master/docs/
 
 ## Work In Progress
 
-This project is a work in progress.
-There will be massive changes in the near future.
-For example, there will be more than 1 React component.
+This project is a WIP.
+The set of data used to render the demo is `lyon.json`. It is supposed to show a portion of the city of Lyon, France.
 
-There is only 1 available set of data (`grand_canyon_200.json`) for now, which has been kind of randomly fetched.
-The current result doesn't match my expectations yet. Mostly because it doesn't look like the Grand Canyon. At all.
+There will be all sorts of udpates in the near future:
 
-But things will get better!
+- **a menu**: more sets of data are coming (it would be nice)
+- **a compass** to know where the cardinal points are (it would be convenient)
+- **a massive optimisation** to prevent computers from melting when processing the data (it will be necessary)
