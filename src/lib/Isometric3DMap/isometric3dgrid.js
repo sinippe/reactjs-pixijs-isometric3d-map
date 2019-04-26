@@ -13,7 +13,9 @@ class Isometric3DGrid {
     this.app.stage.addChild(this.container);
     this.killing = false;
     this.grid = new Grid(this.app, this.container);
-    this.container.scale.x = this.container.scale.y = 0.5;
+    // initial scale
+    const scale = this.params.mobile === true ? 0.35 : 0.5;
+    this.container.scale.x = this.container.scale.y = scale;
     this.populateGrid();
 
     this.initMouseListeners();

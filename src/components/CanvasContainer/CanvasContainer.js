@@ -50,7 +50,8 @@ class CanvasContainer extends Component {
     isometric3DGrid = new Isometric3DGrid({
       app,
       params: {
-        data: dataJSON.results
+        data: dataJSON.results,
+        mobile: isMobile
       }
     });
   }
