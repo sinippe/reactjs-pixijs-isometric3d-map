@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.scss";
-import CanvasContainer from "./components/CanvasContainer/CanvasContainer";
+import Menu from "./components/Menu/Menu";
 
 class App extends Component {
   constructor(props) {
@@ -13,7 +13,7 @@ class App extends Component {
   render() {
     return (
       <>
-        <CanvasContainer file={this.state.mapDataFile} />
+        <Menu />
       </>
     );
   }
