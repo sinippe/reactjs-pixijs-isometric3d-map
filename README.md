@@ -23,6 +23,6 @@ The set of data used to render the demo is `lyon.json`. It is supposed to show a
 
 There will be all sorts of udpates in the near future:
 
-- **a menu**: more sets of data are coming (it would be nice)
-- **a compass** to know where the cardinal points are (it would be convenient)
-- **a massive optimisation** to prevent computers from melting when processing the data (it will be necessary)
+- **a compass** (in any case, a more advanced UI) to know where things are (e.g. cardinal points)
+- **a massive optimisation** to prevent computers from melting when processing the data
+- **more data**!
