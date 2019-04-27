@@ -1,24 +1,12 @@
 import React, { Component } from "react";
 import cn from "classnames";
-import CanvasContainer from "../CanvasContainer/CanvasContainer";
 import "./Menu.scss";
-
-const files = [
-  {
-    name: "Lyon (FR)",
-    file: "lyon.json"
-  },
-  {
-    name: "Grand Canyon",
-    file: "grand_canyon.json"
-  }
-];
 
 class Menu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeIndex: 0
+      activeIndex: this.props.default
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -28,13 +16,16 @@ class Menu extends Component {
     this.setState({
       activeIndex: index
     });
+    if (typeof this.props.onButtonClick === "function") {
+      this.props.onButtonClick(index);
+    }
   }
 
   render() {
     return (
       <>
         <div className="menu">
-          {files.map((file, index) => {
+          {this.props.items.map((item, index) => {
             const active = this.state.activeIndex;
             const isActive = index === active;
             return (
@@ -45,15 +36,11 @@ class Menu extends Component {
                   this.handleClick(index);
                 }}
               >
-                {file.name}
+                {item}
               </button>
             );
           })}
         </div>
-        <CanvasContainer
-          key={`mapData${this.state.activeIndex}`}
-          file={files[this.state.activeIndex].file}
-        />
       </>
     );
   }
