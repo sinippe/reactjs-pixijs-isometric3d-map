@@ -102,7 +102,7 @@ class Isometric3DGrid {
     const { x, y, height } = this.map.scaledMap[this.currentSquareIndex];
     const color = `0x${getColorFromValue(height)}`;
     const square = this.grid.drawSquare({ x, y, z: 0 }, color);
-    this.grid.updateSquareHeight(square, Math.round(height), 1);
+    this.grid.updateSquareHeight(square, Math.round(height), 0);
     this.currentSquareIndex--;
   }
 
