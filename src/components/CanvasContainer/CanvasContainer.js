@@ -7,9 +7,14 @@ const PIXI = require("pixi.js");
 let app, isometric3DGrid;
 
 class CanvasContainer extends Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
     this.initViewPort();
+  }
+
+  componentDidMount() {
     this.initStage();
+    this.initIsometric3DGrid();
   }
 
   componentWillUnmount() {
@@ -40,8 +45,6 @@ class CanvasContainer extends Component {
     window.addEventListener("resize", this.resize);
     // resize
     this.resize();
-    // create grid
-    this.initIsometric3DGrid();
   }
 
   async initIsometric3DGrid() {
@@ -74,7 +77,9 @@ class CanvasContainer extends Component {
   }
 
   render() {
-    return <div id="canvasContainer" ref="canvasContainer" />;
+    return (
+      <div id="canvasContainer" ref="canvasContainer" key={this.props.file} />
+    );
   }
 }
 
