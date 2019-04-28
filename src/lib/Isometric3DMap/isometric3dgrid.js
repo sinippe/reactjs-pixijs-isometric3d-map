@@ -11,11 +11,26 @@ class Isometric3DGrid {
     // internal parameters
     this.container = new PIXI.Container();
     this.app.stage.addChild(this.container);
-    this.killing = false;
     this.grid = new Grid(this.app, this.container);
+    // ticker
+    this.ticker = PIXI.ticker.shared;
+    this.ticker.autoStart = false;
+    this.ticker.minFPS = 1;
+    this.ticker.maxFPS = 100;
+    // grid populating infos
+    this.currentSquareIndex = 0;
+    this.mapLength = 0;
+    // map data infos
+    this.map = {
+      data: null,
+      scaledMap: null,
+      mapLength: 0
+    };
     // initial scale
     this.scale = this.params.mobile === true ? 0.35 : 0.5;
     this.container.scale.x = this.container.scale.y = this.scale;
+    // init tick function & start populating grid
+    this.tick = this.tick.bind(this);
     this.populateGrid();
 
     this.initMouseListeners();
@@ -67,16 +82,32 @@ class Isometric3DGrid {
   }
 
   populateGrid() {
-    const map = new MapDataToGrid(this.params.data);
-    const scaledMap = map.getGrid();
+    this.map = {
+      data: new MapDataToGrid(this.params.data)
+    };
+    this.map.scaledMap = this.map.data.getGrid();
+    this.map.mapLength = this.map.scaledMap.length;
 
-    const mapLength = scaledMap.length;
-    for (let i = 0; i < mapLength; i++) {
-      const { x, y, height } = scaledMap[i];
-      const color = `0x${getColorFromValue(height)}`;
-      const square = this.grid.drawSquare({ x, y, z: 0 }, color);
-      this.grid.updateSquareHeight(square, Math.round(height), 0);
+    this.currentSquareIndex = this.map.mapLength - 1;
+
+    this.ticker.add(this.tick);
+    this.ticker.start();
+  }
+
+  tick(time) {
+    if (this.currentSquareIndex <= 0) {
+      this.ticker.stop();
+      return false;
     }
+    if (this.currentSquareIndex <= 0) {
+      this.ticker.stop();
+      return false;
+    }
+    const { x, y, height } = this.map.scaledMap[this.currentSquareIndex];
+    const color = `0x${getColorFromValue(height)}`;
+    const square = this.grid.drawSquare({ x, y, z: 0 }, color);
+    this.grid.updateSquareHeight(square, Math.round(height), 1);
+    this.currentSquareIndex--;
   }
 
   //----- RESIZE
@@ -88,6 +119,9 @@ class Isometric3DGrid {
     if (!this.killCallback) {
       this.killCallback = callback;
     }
+    this.ticker.stop();
+    this.ticker.remove(this.tick);
+    this.ticker.destroy();
   }
 }
 
