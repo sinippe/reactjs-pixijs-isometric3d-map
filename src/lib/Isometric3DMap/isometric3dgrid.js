@@ -99,11 +99,19 @@ class Isometric3DGrid {
       this.ticker.stop();
       return false;
     }
-    const { x, y, height } = this.map.scaledMap[this.currentSquareIndex];
+    // create 10 squares
+    const minIndex = Math.max(this.currentSquareIndex - 10, 0);
+    for (let i = this.currentSquareIndex; i >= minIndex; i--) {
+      this.addSquare(i);
+      this.currentSquareIndex--;
+    }
+  }
+
+  addSquare(index) {
+    const { x, y, height } = this.map.scaledMap[index];
     const color = `0x${getColorFromValue(height)}`;
     const square = this.grid.drawSquare({ x, y, z: 0 }, color);
     this.grid.updateSquareHeight(square, Math.round(height), 0);
-    this.currentSquareIndex--;
   }
 
   //----- RESIZE
