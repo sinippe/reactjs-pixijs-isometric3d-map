@@ -32,7 +32,7 @@ class Isometric3DGrid {
     // init tick function & start populating grid
     this.tick = this.tick.bind(this);
     this.populateGrid();
-
+    // init mouse listeners
     this.initMouseListeners();
   }
 
