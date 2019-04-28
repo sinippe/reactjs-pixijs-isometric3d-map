@@ -99,10 +99,6 @@ class Isometric3DGrid {
       this.ticker.stop();
       return false;
     }
-    if (this.currentSquareIndex <= 0) {
-      this.ticker.stop();
-      return false;
-    }
     const { x, y, height } = this.map.scaledMap[this.currentSquareIndex];
     const color = `0x${getColorFromValue(height)}`;
     const square = this.grid.drawSquare({ x, y, z: 0 }, color);
