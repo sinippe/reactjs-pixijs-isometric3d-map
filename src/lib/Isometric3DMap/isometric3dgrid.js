@@ -14,8 +14,8 @@ class Isometric3DGrid {
     this.killing = false;
     this.grid = new Grid(this.app, this.container);
     // initial scale
-    const scale = this.params.mobile === true ? 0.35 : 0.5;
-    this.container.scale.x = this.container.scale.y = scale;
+    this.scale = this.params.mobile === true ? 0.35 : 0.5;
+    this.container.scale.x = this.container.scale.y = this.scale;
     this.populateGrid();
 
     this.initMouseListeners();
@@ -34,8 +34,8 @@ class Isometric3DGrid {
     };
     const mouseMoveListener = event => {
       const mouse = _this.getMouseCoordinatesFromEvent(event);
-      const deltaX = mouse.x - lastMouseX;
-      const deltaY = mouse.y - lastMouseY;
+      const deltaX = ((mouse.x - lastMouseX) * 1) / this.scale;
+      const deltaY = ((mouse.y - lastMouseY) * 1) / this.scale;
       _this.grid.gridContainer.x += deltaX;
       _this.grid.gridContainer.y += deltaY;
       lastMouseX = mouse.x;
