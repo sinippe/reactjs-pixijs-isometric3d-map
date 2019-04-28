@@ -14,6 +14,7 @@ class Square {
   }
 
   drawSquare() {
+    this.cacheGraphicsAsBitmap(false);
     this.checkSquareExists();
     this.drawSides();
     this.square.beginFill(this.color);
@@ -24,6 +25,8 @@ class Square {
     this.square.lineTo(-this.size, -this.size / 2 - this.height);
     this.square.lineTo(0, -this.height);
     this.square.endFill();
+
+    this.cacheGraphicsAsBitmap(true);
   }
 
   drawSides() {
@@ -91,6 +94,12 @@ class Square {
       );
     }
     return this.graphics;
+  }
+
+  cacheGraphicsAsBitmap(cache) {
+    if (this.graphics) {
+      this.graphics.cacheAsBitmap = Boolean(cache);
+    }
   }
 
   set height(height) {
