@@ -14,7 +14,7 @@ class CanvasContainer extends Component {
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.resize);
-    if (isometric3DGrid && isometric3DGrid.hasOwnProperty("kill")) {
+    if (isometric3DGrid && typeof isometric3DGrid.kill === "function") {
       isometric3DGrid.kill();
     }
   }
@@ -67,7 +67,7 @@ class CanvasContainer extends Component {
   }
 
   resize(event) {
-    if (isometric3DGrid && isometric3DGrid.hasOwnProperty("resize")) {
+    if (isometric3DGrid && typeof isometric3DGrid.resize === "function") {
       isometric3DGrid.resize(event);
     }
     app.renderer.resize(window.innerWidth, window.innerHeight);
