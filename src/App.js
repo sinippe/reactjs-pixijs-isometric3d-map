@@ -11,6 +11,10 @@ const files = [
   {
     name: "Grand Canyon",
     file: "grand_canyon.json"
+  },
+  {
+    name: "Kilimanjaro",
+    file: "kilimanjaro.json"
   }
 ];
 
