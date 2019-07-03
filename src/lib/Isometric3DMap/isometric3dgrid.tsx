@@ -1,17 +1,39 @@
 import { getColorFromValue } from "./utils/color";
+import Grid from "./objects/grid";
+import Square from "./objects/square";
 const PIXI = require("pixi.js");
-const Grid = require("./objects/grid").default;
 const MapDataToGrid = require("./mapdata/mapdatatogrid").default;
 
+export interface IIsometric3DGridInputParams {
+  app: PIXI.Application;
+  params: any;
+}
+
 class Isometric3DGrid {
-  constructor({ app, params }) {
+  private app: PIXI.Application;
+  private container: PIXI.Container;
+  private grid: Grid;
+  // TODO: write specs for parameters object
+  private params: any;
+  // TODO: add type for ticker
+  private ticker: any;
+
+  private currentSquareIndex: number;
+  private mapLength: number;
+  // TODO: add local private interface for this object
+  private map: any;
+  private scale: number;
+  private killCallback: CallableFunction;
+
+  constructor(inputParams: IIsometric3DGridInputParams) {
     // external parameters
-    this.app = app;
-    this.params = params;
+    this.app = inputParams.app;
+    this.params = inputParams.params;
     // internal parameters
     this.container = new PIXI.Container();
     this.app.stage.addChild(this.container);
     this.grid = new Grid(this.app, this.container);
+    this.killCallback = () => null;
     // ticker
     this.ticker = PIXI.ticker.shared;
     this.ticker.autoStart = false;
@@ -38,16 +60,16 @@ class Isometric3DGrid {
 
   initMouseListeners() {
     const _this = this;
-    let lastMouseX, lastMouseY;
+    let lastMouseX: number, lastMouseY: number;
 
-    const mouseDownListener = event => {
+    const mouseDownListener = (event: Event) => {
       const mouse = _this.getMouseCoordinatesFromEvent(event);
       lastMouseX = mouse.x;
       lastMouseY = mouse.y;
       document.addEventListener("mousemove", mouseMoveListener);
       document.addEventListener("touchmove", mouseMoveListener);
     };
-    const mouseMoveListener = event => {
+    const mouseMoveListener = (event: Event) => {
       const mouse = _this.getMouseCoordinatesFromEvent(event);
       const deltaX = ((mouse.x - lastMouseX) * 1) / this.scale;
       const deltaY = ((mouse.y - lastMouseY) * 1) / this.scale;
@@ -67,16 +89,18 @@ class Isometric3DGrid {
     document.addEventListener("touchend", mouseUpListener);
   }
 
-  getMouseCoordinatesFromEvent(event) {
-    if (event.touches) {
+  getMouseCoordinatesFromEvent(event: Event) {
+    if (event.hasOwnProperty("touches")) {
+      const touchEvent: TouchEvent = event as TouchEvent;
       return {
-        x: event.touches[0].pageX,
-        y: event.touches[0].pageY
+        x: touchEvent.touches[0].pageX,
+        y: touchEvent.touches[0].pageY
       };
     } else {
+      const mouseEvent: MouseEvent = event as MouseEvent;
       return {
-        x: event.clientX,
-        y: event.clientY
+        x: mouseEvent.clientX,
+        y: mouseEvent.clientY
       };
     }
   }
@@ -94,7 +118,7 @@ class Isometric3DGrid {
     this.ticker.start();
   }
 
-  tick(time) {
+  tick(time: number) {
     if (this.currentSquareIndex <= 0) {
       this.ticker.stop();
       return false;
@@ -107,19 +131,19 @@ class Isometric3DGrid {
     }
   }
 
-  addSquare(index) {
+  addSquare(index: number) {
     const { x, y, height } = this.map.scaledMap[index];
-    const color = `0x${getColorFromValue(height)}`;
-    const square = this.grid.drawSquare({ x, y, z: 0 }, color);
+    const color: number = Number(`0x${getColorFromValue(height)}`);
+    const square: Square = this.grid.drawSquare({ x, y, z: 0 }, color);
     this.grid.updateSquareHeight(square, Math.round(height), 0);
   }
 
   //----- RESIZE
-  resize(event) {
+  resize(event: Event) {
     return event;
   }
 
-  kill(callback) {
+  kill(callback: CallableFunction) {
     if (!this.killCallback) {
       this.killCallback = callback;
     }

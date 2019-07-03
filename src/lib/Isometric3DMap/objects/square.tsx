@@ -1,21 +1,37 @@
-const PIXI = require("pixi.js");
+import { GridDisplayObject } from "./grid-display-object";
+import { IGridPoint } from "../interfaces/grid-point.interface";
+import { Graphics } from "pixi.js";
 
 class Square {
-  constructor(parameters) {
+  private _height: number;
+  private color: number;
+  private graphics: GridDisplayObject;
+  private graphicsInit: boolean;
+  private lineWidth: number;
+  private lineColor: number;
+  private lineAlpha: number;
+  private size: number;
+  private square: Graphics;
+
+  // TODO: add an interface to specify the parameters object's structure
+  constructor(parameters: any) {
     this.size = parameters.size;
     this.color = parameters.color;
     this._height = parameters.height || 0;
-    // local parameters
+    // local parameters + default values
+    this.graphics = new GridDisplayObject();
+    this.graphicsInit = false;
     this.lineWidth = 1;
     this.lineColor = 0xffffff;
     this.lineAlpha = 1;
+    this.square = new Graphics();
 
     this.drawSquare();
   }
 
   drawSquare() {
     this.cacheGraphicsAsBitmap(false);
-    this.checkSquareExists();
+    this.clearSquare();
     this.drawSides();
     this.square.beginFill(this.color);
     this.square.lineStyle(this.lineWidth, this.lineColor, this.lineAlpha);
@@ -49,12 +65,8 @@ class Square {
     this.square.endFill();
   }
 
-  checkSquareExists() {
-    if (!this.square) {
-      this.square = new PIXI.Graphics();
-    } else {
-      this.square.clear();
-    }
+  clearSquare() {
+    this.square.clear();
   }
 
   /**
@@ -65,7 +77,7 @@ class Square {
    * @param {Number} point.z
    * @returns {Boolean} Whether or not the graphics' container has been created
    */
-  createGraphics(point) {
+  createGraphics(point: IGridPoint) {
     if (
       typeof point.x === "undefined" ||
       typeof point.y === "undefined" ||
@@ -75,20 +87,23 @@ class Square {
         `Square.createGraphics: parameter 'point' has to have 'x', 'y' and 'z' properties`
       );
     }
-    if (this.graphics) {
+    if (this.graphicsInit) {
       return false;
     }
-    const sprite = new PIXI.Sprite();
-    sprite.addChild(this.square);
-    sprite.gridX = point.x;
-    sprite.gridY = point.y;
-    sprite.gridZ = point.z;
-    this.graphics = sprite;
+    this.graphics = new GridDisplayObject();
+
+    this.graphics.addChild(this.square);
+    this.graphics.gridX = point.x;
+    this.graphics.gridY = point.y;
+    this.graphics.gridZ = point.z;
+
+    this.graphicsInit = true;
+
     return true;
   }
 
-  getGraphics() {
-    if (!this.graphics) {
+  getGraphics(): GridDisplayObject {
+    if (!this.graphicsInit) {
       throw new Error(
         `Square.getGraphics: not defined. Did you call 'createGraphics' first?'`
       );
@@ -96,9 +111,9 @@ class Square {
     return this.graphics;
   }
 
-  cacheGraphicsAsBitmap(cache) {
+  cacheGraphicsAsBitmap(cache: boolean) {
     if (this.graphics) {
-      this.graphics.cacheAsBitmap = Boolean(cache);
+      this.graphics.cacheAsBitmap = cache;
     }
   }
 

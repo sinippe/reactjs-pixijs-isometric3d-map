@@ -1,21 +1,30 @@
-import { TweenLite } from "gsap/TweenLite";
-import { Expo } from "gsap/EasePack";
+import { TweenLite } from "gsap";
+import { Expo } from "gsap";
+
 import { gridToAbsolute, absoluteToGrid } from "../display/pointconverter";
+import Square from "./square";
+import { DisplayManager } from "../display/displaymanager";
+import { IGridPoint } from "../interfaces/grid-point.interface";
+
 const PIXI = require("pixi.js");
-const Square = require("./square").default;
-const DisplayManager = require("../display/displaymanager").default;
 
 // grid cell's half width
 const GRID_UNIT = 40;
 
 class Grid {
-  constructor(app, container) {
+  private app: PIXI.Application;
+  private displayManager: DisplayManager;
+  public gridContainer: PIXI.Container;
+  private gridObjects: Square[];
+  private _gridWidth: number = 0;
+  private _gridHeight: number = 0;
+
+  constructor(app: PIXI.Application, container: PIXI.Container) {
     this.app = app;
     this.gridObjects = [];
     this.updateGridSize();
-    const gridContainer = new PIXI.Container();
-    this.gridContainer = gridContainer;
-    container.addChild(gridContainer);
+    this.gridContainer = new PIXI.Container();
+    container.addChild(this.gridContainer);
 
     this.displayManager = new DisplayManager(this.gridContainer);
 
@@ -23,8 +32,8 @@ class Grid {
     this.gridContainer.y = app.renderer.height / 2;
   }
 
-  drawSquare(coordinates, color) {
-    const square = new Square({
+  drawSquare(coordinates: IGridPoint, color: number): Square {
+    const square: Square = new Square({
       size: GRID_UNIT,
       color
     });
@@ -40,11 +49,12 @@ class Grid {
     squareGraphics.y = convertedCoordinates.y;
 
     this.displayManager.addObjectToGrid(squareGraphics);
+
     this.gridObjects.push(square);
     return square;
   }
 
-  updateSquareHeight(square, height, duration = 5) {
+  updateSquareHeight(square: Square, height: number, duration: number = 5) {
     TweenLite.to(square, duration, {
       height,
       ease: Expo.easeOut,
@@ -53,11 +63,11 @@ class Grid {
   }
 
   updateGridSize() {
-    this.gridWidth = Math.ceil(this.app.renderer.width / (GRID_UNIT * 2));
-    this.gridHeight = Math.ceil(this.app.renderer.height / (GRID_UNIT / 2));
+    this._gridWidth = Math.ceil(this.app.renderer.width / (GRID_UNIT * 2));
+    this._gridHeight = Math.ceil(this.app.renderer.height / (GRID_UNIT / 2));
   }
 
-  getSquareAt(point) {
+  getSquareAt(point: IGridPoint) {
     const gridCoordinates = absoluteToGrid(point);
     const { x, y, z } = gridCoordinates;
     let returnObject;
@@ -84,6 +94,14 @@ class Grid {
       x: this.gridContainer.x,
       y: this.gridContainer.y
     };
+  }
+
+  get gridWidth(): number {
+    return this._gridWidth;
+  }
+
+  get gridHeight(): number {
+    return this._gridHeight;
   }
 }
 

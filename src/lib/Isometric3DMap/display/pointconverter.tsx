@@ -1,4 +1,5 @@
 import { GRID_UNIT } from "../objects/grid";
+import { IGridPoint } from "../interfaces/grid-point.interface";
 
 /**
  * Converts grid coordinates to "real" coordinates
@@ -7,7 +8,7 @@ import { GRID_UNIT } from "../objects/grid";
  * @param {Number} point.y
  * @param {Number} point.z
  */
-const gridToAbsolute = function(point) {
+const gridToAbsolute = function(point: IGridPoint) {
   point.z = point.z || 0;
   const x = GRID_UNIT + point.x * GRID_UNIT + point.y * GRID_UNIT;
   const y =
@@ -26,7 +27,7 @@ const gridToAbsolute = function(point) {
  * @param {Number} point.x
  * @param {Number} point.y
  */
-const absoluteToGrid = function(point) {
+const absoluteToGrid = function(point: IGridPoint) {
   // ajust input
   point.x += GRID_UNIT;
   point.y += GRID_UNIT / 2;
