@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './App.scss';
-import CanvasContainer from './components/CanvasContainer/CanvasContainer';
-import MapSelector from './components/MapSelector/MapSelector';
+import CanvasContainer from '../CanvasContainer/CanvasContainer';
+import MapSelector from '../MapSelector/MapSelector';
 import styled from 'styled-components';
-import Progress from './components/Progress/Progress';
+import Progress from '../Progress/Progress';
 
 const files = [
   {
