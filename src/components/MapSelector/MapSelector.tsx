@@ -21,6 +21,7 @@ type State = {
   frameWidth: number;
   frameHeight: number;
   frameEnabled: boolean;
+  mapHeight: number;
 };
 
 interface IMapArea {
@@ -48,17 +49,28 @@ export default class MapSelector extends Component<Props, State> {
     this.state = {
       lat: 51.505,
       lng: -0.09,
-      zoom: 13,
+      zoom: 5,
       frameX: 0,
       frameY: 0,
       frameWidth: 0,
       frameHeight: 0,
-      frameEnabled: false
+      frameEnabled: false,
+      mapHeight: 600
     };
 
     this.handleClickLeaflet = this.handleClickLeaflet.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
+    this.handleResize = this.handleResize.bind(this);
     this.updateStateAfterClick = this.updateStateAfterClick.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
   }
 
   addMouseMoveHandler(add: boolean = true) {
@@ -85,6 +97,10 @@ export default class MapSelector extends Component<Props, State> {
       frameWidth: event.clientX - frameX,
       frameHeight: event.clientY - frameY
     });
+  }
+
+  handleResize() {
+    this.setState({ mapHeight: window.innerHeight });
   }
 
   fetchDataInit() {
@@ -150,7 +166,7 @@ export default class MapSelector extends Component<Props, State> {
         <Map
           ref={this.map}
           className="map-component"
-          style={{ width: '100%', height: '600px' }}
+          style={{ width: '100%', height: `${this.state.mapHeight}px` }}
           center={position}
           zoom={this.state.zoom}
           onclick={this.handleClickLeaflet}
