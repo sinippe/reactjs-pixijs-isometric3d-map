@@ -4,14 +4,17 @@
   "private": true,
   "homepage": "http://sinippe.com/isometric",
   "dependencies": {
+    "@material-ui/core": "^4.4.0",
     "classnames": "^2.2.6",
     "gsap": "^2.1.2",
+    "leaflet": "^1.5.1",
     "mobile-device-detect": "^0.2.3",
     "pixi.js": "^4.8.7",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-leaflet": "^2.4.0",
     "react-scripts": "^3.0.1",
-    "typescript": "^3.5.2"
+    "styled-components": "^4.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -29,12 +32,17 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@types/pixi.js": "^4.8.8",
     "@types/gsap": "^1.20.2",
     "@types/jest": "^24.0.15",
+    "@types/leaflet": "^1.5.1",
     "@types/node": "^12.0.10",
+    "@types/pixi.js": "^4.8.8",
     "@types/react": "^16.8.22",
     "@types/react-dom": "^16.8.4",
-    "node-sass": "^4.11.0"
+    "@types/react-leaflet": "^2.4.0",
+    "@types/react-slider": "^0.8.1",
+    "@types/styled-components": "^4.1.18",
+    "node-sass": "^4.11.0",
+    "typescript": "^3.5.2"
   }
 }
