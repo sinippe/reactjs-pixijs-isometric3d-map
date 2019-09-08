@@ -33,8 +33,15 @@ body {
 }
 
 /** RESET **/
-button {
+button.switch-view {
   background: none;
   border: none;
   outline: none;
+  cursor: pointer;
+  position: absolute;
+  z-index: 9998;
+  color: white;
+  background: $color2;
+  border-radius: 3px;
+  padding: 0.5em;
 }
