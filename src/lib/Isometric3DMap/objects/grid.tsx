@@ -1,12 +1,13 @@
-import { TweenLite } from "gsap";
-import { Expo } from "gsap";
+import { TweenLite } from 'gsap';
+import { Expo } from 'gsap';
 
-import { gridToAbsolute, absoluteToGrid } from "../display/pointconverter";
-import Square from "./square";
-import { DisplayManager } from "../display/displaymanager";
-import { IGridPoint } from "../interfaces/grid-point.interface";
+import { gridToAbsolute, absoluteToGrid } from '../display/pointconverter';
+import Square from './square';
+import { DisplayManager } from '../display/displaymanager';
+import { IGridPoint } from '../interfaces/grid-point.interface';
+import { GridDisplayObject } from './grid-display-object';
 
-const PIXI = require("pixi.js");
+const PIXI = require('pixi.js');
 
 // grid cell's half width
 const GRID_UNIT = 40;
@@ -32,7 +33,11 @@ class Grid {
     this.gridContainer.y = app.renderer.height / 2;
   }
 
-  drawSquare(coordinates: IGridPoint, color: number): Square {
+  drawSquare(
+    coordinates: IGridPoint,
+    color: number,
+    addToGrid: boolean = true
+  ): Square {
     const square: Square = new Square({
       size: GRID_UNIT,
       color
@@ -48,10 +53,18 @@ class Grid {
     squareGraphics.x = convertedCoordinates.x;
     squareGraphics.y = convertedCoordinates.y;
 
-    this.displayManager.addObjectToGrid(squareGraphics);
-
+    if (addToGrid) {
+      this.displayManager.addObjectToGrid(squareGraphics);
+    }
     this.gridObjects.push(square);
     return square;
+  }
+
+  drawAll() {
+    const gridDisplayObjects: GridDisplayObject[] = this.gridObjects.map(
+      gridObject => gridObject.getGraphics()
+    );
+    this.displayManager.addObjectListToGrid(gridDisplayObjects);
   }
 
   updateSquareHeight(square: Square, height: number, duration: number = 5) {

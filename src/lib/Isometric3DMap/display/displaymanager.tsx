@@ -1,5 +1,5 @@
-import { Container, DisplayObject } from "pixi.js";
-import { GridDisplayObject } from "../objects/grid-display-object";
+import { Container, DisplayObject } from 'pixi.js';
+import { GridDisplayObject } from '../objects/grid-display-object';
 
 export class DisplayManager {
   private container: Container;
@@ -11,6 +11,13 @@ export class DisplayManager {
   addObjectToGrid(object: GridDisplayObject) {
     this.container.addChild(object as DisplayObject);
     this.orderObjects(this.container);
+  }
+
+  addObjectListToGrid(objectList: GridDisplayObject[]) {
+    const sortedObjects = this.sortObjects(objectList);
+    sortedObjects.forEach(object => {
+      this.container.addChild(object);
+    });
   }
 
   removeObjectFromGrid(object: DisplayObject) {
@@ -28,11 +35,18 @@ export class DisplayManager {
    * Order objects' depths within container
    * @param {PIXI.Container} container
    */
-  private orderObjects = function(container: Container) {
-    //let children = container.children;
-    let children: GridDisplayObject[] = container.children as GridDisplayObject[];
-    // order children
-    children.sort((a, b) => {
+  private orderObjects(container: Container) {
+    const children: GridDisplayObject[] = container.children as GridDisplayObject[];
+    const sortedChildren = this.sortObjects(children);
+
+    const childrenCount = sortedChildren.length;
+    for (let i = 0; i < childrenCount; i++) {
+      container.setChildIndex(sortedChildren[i], i);
+    }
+  }
+
+  private sortObjects(objectList: GridDisplayObject[]) {
+    return objectList.sort((a, b) => {
       if (a.gridX > b.gridX) {
         return 1;
       } else if (a.gridX < b.gridX) {
@@ -45,26 +59,5 @@ export class DisplayManager {
         return 0;
       }
     });
-    // testing all children
-    const childrenCount = children.length;
-    for (let i = 0; i < childrenCount; i++) {
-      //this.testObject(children[i]);
-      container.setChildIndex(children[i], i);
-    }
-  };
-  /*
-  private testObject = function(object) {
-    if (
-      typeof object.gridX === "undefined" ||
-      typeof object.gridY === "undefined" ||
-      typeof object.gridZ === "undefined"
-    ) {
-      throw new Error(
-        `DisplayManager.addObjectToGrid: parameter object has to have gridX, gridY and gridZ coordinates.`
-      );
-    }
-  };
-  */
+  }
 }
-
-//export default DisplayManager;

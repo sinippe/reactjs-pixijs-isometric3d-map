@@ -1,8 +1,8 @@
-import { getColorFromValue } from "./utils/color";
-import Grid from "./objects/grid";
-import Square from "./objects/square";
-const PIXI = require("pixi.js");
-const MapDataToGrid = require("./mapdata/mapdatatogrid").default;
+import { getColorFromValue } from './utils/color';
+import Grid from './objects/grid';
+import Square from './objects/square';
+const PIXI = require('pixi.js');
+const MapDataToGrid = require('./mapdata/mapdatatogrid').default;
 
 export interface IIsometric3DGridInputParams {
   app: PIXI.Application;
@@ -66,8 +66,8 @@ class Isometric3DGrid {
       const mouse = _this.getMouseCoordinatesFromEvent(event);
       lastMouseX = mouse.x;
       lastMouseY = mouse.y;
-      document.addEventListener("mousemove", mouseMoveListener);
-      document.addEventListener("touchmove", mouseMoveListener);
+      document.addEventListener('mousemove', mouseMoveListener);
+      document.addEventListener('touchmove', mouseMoveListener);
     };
     const mouseMoveListener = (event: Event) => {
       const mouse = _this.getMouseCoordinatesFromEvent(event);
@@ -79,18 +79,18 @@ class Isometric3DGrid {
       lastMouseY = mouse.y;
     };
     const mouseUpListener = () => {
-      document.removeEventListener("mousemove", mouseMoveListener);
-      document.removeEventListener("touchmove", mouseMoveListener);
+      document.removeEventListener('mousemove', mouseMoveListener);
+      document.removeEventListener('touchmove', mouseMoveListener);
     };
 
-    document.addEventListener("mousedown", mouseDownListener);
-    document.addEventListener("touchstart", mouseDownListener);
-    document.addEventListener("mouseup", mouseUpListener);
-    document.addEventListener("touchend", mouseUpListener);
+    document.addEventListener('mousedown', mouseDownListener);
+    document.addEventListener('touchstart', mouseDownListener);
+    document.addEventListener('mouseup', mouseUpListener);
+    document.addEventListener('touchend', mouseUpListener);
   }
 
   getMouseCoordinatesFromEvent(event: Event) {
-    if (event.hasOwnProperty("touches")) {
+    if (event.hasOwnProperty('touches')) {
       const touchEvent: TouchEvent = event as TouchEvent;
       return {
         x: touchEvent.touches[0].pageX,
@@ -129,12 +129,13 @@ class Isometric3DGrid {
       this.addSquare(i);
       this.currentSquareIndex--;
     }
+    this.grid.drawAll();
   }
 
   addSquare(index: number) {
     const { x, y, height } = this.map.scaledMap[index];
     const color: number = Number(`0x${getColorFromValue(height)}`);
-    const square: Square = this.grid.drawSquare({ x, y, z: 0 }, color);
+    const square: Square = this.grid.drawSquare({ x, y, z: 0 }, color, false);
     this.grid.updateSquareHeight(square, Math.round(height), 0);
   }
 
