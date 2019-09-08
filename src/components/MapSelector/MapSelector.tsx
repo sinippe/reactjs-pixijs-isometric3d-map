@@ -21,6 +21,7 @@ type State = {
   frameWidth: number;
   frameHeight: number;
   frameEnabled: boolean;
+  frameReady: boolean;
   mapHeight: number;
 };
 
@@ -55,6 +56,7 @@ export default class MapSelector extends Component<Props, State> {
       frameWidth: 0,
       frameHeight: 0,
       frameEnabled: false,
+      frameReady: false,
       mapHeight: 600
     };
 
@@ -88,7 +90,7 @@ export default class MapSelector extends Component<Props, State> {
       event.latlng.lat,
       event.latlng.lng
     );
-    this.addMouseMoveHandler(this.state.frameEnabled);
+    this.addMouseMoveHandler(this.state.frameEnabled && !this.state.frameReady);
   }
 
   handleMouseMove(event: MouseEvent) {
@@ -126,13 +128,20 @@ export default class MapSelector extends Component<Props, State> {
 
   updateStateAfterClick(x: number, y: number, lat: number, lng: number) {
     this.setState(
-      prevState => ({
-        frameEnabled: !prevState.frameEnabled,
-        frameX: x,
-        frameY: y
-      }),
+      prevState => {
+        const newState: any = {};
+        if (!prevState.frameEnabled) {
+          newState.frameEnabled = true;
+          newState.frameX = x;
+          newState.frameY = y;
+        } else {
+          newState.frameReady = true;
+        }
+        return newState;
+      },
       () => {
-        if (this.state.frameEnabled) {
+        // first click
+        if (this.state.frameEnabled && !this.state.frameReady) {
           this.mapArea = {
             lat,
             lng,
