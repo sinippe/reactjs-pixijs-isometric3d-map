@@ -1,3 +1,6 @@
+$color1: #303030;
+$color2: #202020;
+
 /** GENERAL **/
 body,
 html {
@@ -8,7 +11,7 @@ html {
 }
 
 body {
-  background: #303030;
+  background: $color1;
   position: relative;
 }
 
@@ -22,7 +25,7 @@ body {
     height: 100%;
   }
   canvas {
-    background: #202020;
+    background: $color2;
     position: absolute;
     top: 0;
     left: 0;
