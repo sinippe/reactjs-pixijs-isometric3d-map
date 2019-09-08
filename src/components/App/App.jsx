@@ -4,6 +4,7 @@ import CanvasContainer from '../CanvasContainer/CanvasContainer';
 import MapSelector from '../MapSelector/MapSelector';
 import styled from 'styled-components';
 import Progress from '../Progress/Progress';
+import CustomDialog from '../CustomDialog/CustomDialog';
 
 const files = [
   {
@@ -36,7 +37,9 @@ class App extends Component {
       activeFileIndex: 0,
       mapData: undefined,
       displayMap: false,
-      isLoading: false
+      isLoading: false,
+      mapFirstVisit: true,
+      displayMapWarning: true
     };
 
     this.displayIsometric3dView = this.displayIsometric3dView.bind(this);
@@ -50,7 +53,13 @@ class App extends Component {
   }
 
   displayMap() {
-    this.setState({ displayMap: true });
+    const newState = { displayMap: true };
+    if (this.state.mapFirstVisit) {
+      newState.mapFirstVisit = false;
+    } else if (this.state.displayMapWarning) {
+      newState.displayMapWarning = false;
+    }
+    this.setState(newState);
   }
 
   onMapDataLoadInit() {
@@ -68,6 +77,9 @@ class App extends Component {
   render() {
     return (
       <>
+        {this.state.displayMap && this.state.displayMapWarning && (
+          <CustomDialog content="Drag around the map to select the area to render. Click once to start drawing the area. Click once more to end drawing."></CustomDialog>
+        )}
         {this.state.isLoading && <Progress></Progress>}
         {this.state.displayMap && (
           <>
