@@ -10,4 +10,11 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  p {
+    color: white;
+    background: black;
+    padding: 0.3em;
+    border-radius: 0.3em;
+  }
 }
