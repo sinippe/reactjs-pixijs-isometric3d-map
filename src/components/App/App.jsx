@@ -85,7 +85,10 @@ class App extends Component {
         )}
         {!this.state.displayMap && (
           <>
-            <ButtonToMap className="switch-view" onClick={this.displayMap}>
+            <ButtonToMap
+              className="switch-view inverted"
+              onClick={this.displayMap}
+            >
               &lt; Map
             </ButtonToMap>
             <CanvasContainer
