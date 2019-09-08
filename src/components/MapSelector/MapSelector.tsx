@@ -95,9 +95,11 @@ export default class MapSelector extends Component<Props, State> {
 
   handleMouseMove(event: MouseEvent) {
     const { frameX, frameY } = this.state;
+    const frameWidth = event.clientX - frameX;
+    const frameHeight = event.clientY - frameY;
     this.setState({
-      frameWidth: event.clientX - frameX,
-      frameHeight: event.clientY - frameY
+      frameWidth,
+      frameHeight
     });
   }
 
@@ -149,8 +151,25 @@ export default class MapSelector extends Component<Props, State> {
             height: 0
           };
         } else {
-          this.mapArea.width = lng - Number(this.mapArea.lng);
-          this.mapArea.height = Number(this.mapArea.lat) - lat;
+          let newWidth = lng - Number(this.mapArea.lng);
+          let newHeight = Number(this.mapArea.lat) - lat;
+          let newLng, newLat;
+          if (newWidth < 0) {
+            newLng = lng;
+            newWidth = Math.abs(newWidth);
+          } else {
+            newLng = this.mapArea.lng;
+          }
+          if (newHeight < 0) {
+            newLat = lat;
+            newHeight = Math.abs(newHeight);
+          } else {
+            newLat = this.mapArea.lat;
+          }
+          this.mapArea.lng = newLng;
+          this.mapArea.lat = newLat;
+          this.mapArea.width = newWidth;
+          this.mapArea.height = newHeight;
           this.fetchData(this.mapArea);
         }
       }
