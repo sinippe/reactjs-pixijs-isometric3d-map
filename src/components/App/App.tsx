@@ -30,8 +30,18 @@ const ButtonToMap = styled.button`
   left: 1em;
 `;
 
-class App extends Component {
-  constructor(props) {
+type Props = {};
+type State = {
+  activeFileIndex: number;
+  mapData: JSON | undefined;
+  displayMap: boolean;
+  isLoading: boolean;
+  mapFirstVisit: boolean;
+  displayMapWarning: boolean;
+};
+
+class App extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       activeFileIndex: 0,
@@ -53,7 +63,7 @@ class App extends Component {
   }
 
   displayMap() {
-    const newState = { displayMap: true };
+    const newState: any = { displayMap: true };
     if (this.state.mapFirstVisit) {
       newState.mapFirstVisit = false;
     } else if (this.state.displayMapWarning) {
@@ -66,7 +76,7 @@ class App extends Component {
     this.setState({ isLoading: true });
   }
 
-  onMapData(data) {
+  onMapData(data: JSON) {
     this.setState({
       mapData: data,
       displayMap: false,
