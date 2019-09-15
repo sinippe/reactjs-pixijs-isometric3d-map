@@ -43,14 +43,16 @@ export default function App(props: Props) {
 
   useEffect(() => {
     if (displayMapSelector) {
-      setMapVisits(mapVisits + 1);
+      return () => {
+        setMapVisits(mapVisits + 1);
+      };
     }
   }, [displayMapSelector, mapVisits]);
 
   return (
     <>
       {isLoading && <Progress></Progress>}
-      {displayMapSelector && mapVisits === 1 && (
+      {displayMapSelector && mapVisits === 0 && (
         <CustomDialog content="Drag around the map to select the area to render. Click once to start drawing the area. Click once more to end drawing."></CustomDialog>
       )}
       {displayMapSelector && (
