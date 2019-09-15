@@ -129,8 +129,8 @@ class Isometric3DGrid {
   }
 
   getMouseCoordinatesFromEvent(event: Event) {
-    if (event.hasOwnProperty('touches')) {
-      const touchEvent: TouchEvent = event as TouchEvent;
+    const touchEvent: TouchEvent = event as TouchEvent;
+    if (touchEvent.touches) {
       return {
         x: touchEvent.touches[0].pageX,
         y: touchEvent.touches[0].pageY
