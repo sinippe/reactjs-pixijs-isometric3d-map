@@ -45,7 +45,7 @@ export default function App(props: Props) {
     if (displayMapSelector) {
       setMapVisits(mapVisits + 1);
     }
-  }, [displayMapSelector]);
+  }, [displayMapSelector, mapVisits]);
 
   return (
     <>
