@@ -15,7 +15,7 @@ class MapDataToGrid {
 
     // sorting latitudes in descending order (North to South)
     const latitudes = this.reduceArray(rawData, "latitude");
-    latitudes.sort((a, b) => b - a);
+    latitudes.sort((a, b) => a - b);
     this.height = latitudes.length;
 
     // sorting elevations in ascending order
