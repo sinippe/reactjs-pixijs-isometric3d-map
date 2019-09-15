@@ -1,4 +1,4 @@
-import { getColorFromValue } from './utils/color';
+import Color from './utils/Color';
 import Grid from './objects/grid';
 import Square from './objects/square';
 const PIXI = require('pixi.js');
@@ -23,7 +23,30 @@ class Isometric3DGrid {
   // TODO: add local private interface for this object
   private map: any;
   private scale: number;
+  private maxHeight: number = 0;
+  private minHeight: number = 0;
   private killCallback: CallableFunction;
+
+  /**
+   * Map Settings
+   */
+
+  private waterLevel: number;
+  private beachLevel: number;
+  private forestLevel: number;
+  private mountainLevel: number;
+  private snowLevel: number;
+  /**
+   * Color Settings
+   */
+  private lowColor: Color;
+  private highColor: Color;
+
+  private waterColor: Color;
+  private beachColor: Color;
+  private forestColor: Color;
+  private mountainColor: Color;
+  private snowColor: Color;
 
   constructor(inputParams: IIsometric3DGridInputParams) {
     // external parameters
@@ -48,6 +71,22 @@ class Isometric3DGrid {
       scaledMap: null,
       mapLength: 0
     };
+    // Color setting
+    this.lowColor = new Color(255, 255, 128);
+    this.highColor = new Color(179, 179, 255);
+
+    this.waterColor = new Color(102, 102, 255);
+    this.beachColor = new Color(255, 255, 179);
+    this.forestColor = new Color(0, 179, 0);
+    this.mountainColor = new Color(153, 102, 51);
+    this.snowColor = new Color(242, 242, 242);
+    // Map Settings
+    this.waterLevel = 20;
+    this.beachLevel = 40;
+    this.forestLevel = 200;
+    this.mountainLevel = 340;
+    this.snowLevel = 500;
+
     // initial scale
     this.scale = this.params.mobile === true ? 0.35 : 0.5;
     this.container.scale.x = this.container.scale.y = this.scale;
@@ -114,6 +153,14 @@ class Isometric3DGrid {
 
     this.currentSquareIndex = this.map.mapLength - 1;
 
+    this.map.scaledMap.forEach((point: any) => {
+      if (point.height > this.maxHeight) {
+        this.maxHeight = point.height;
+      } else if (point.height < this.minHeight) {
+        this.minHeight = point.height;
+      }
+    });
+
     this.ticker.add(this.tick);
     this.ticker.start();
   }
@@ -125,6 +172,7 @@ class Isometric3DGrid {
     }
     // create 10 squares
     const minIndex = Math.max(this.currentSquareIndex - 10, 0);
+
     for (let i = this.currentSquareIndex; i >= minIndex; i--) {
       this.addSquare(i);
       this.currentSquareIndex--;
@@ -134,8 +182,32 @@ class Isometric3DGrid {
 
   addSquare(index: number) {
     const { x, y, height } = this.map.scaledMap[index];
-    const color: number = Number(`0x${getColorFromValue(height)}`);
-    const square: Square = this.grid.drawSquare({ x, y, z: 0 }, color, false);
+
+    const t = (height - this.minHeight) / (this.maxHeight - this.minHeight);
+
+    // let lerpedColor: Color;
+
+    // if (height > 0 && height <= this.waterLevel) {
+    //   lerpedColor = this.waterColor.lerpTo(this.beachColor, t);
+    // } else if (height <= this.beachLevel && height > this.waterLevel) {
+    //   lerpedColor = this.beachColor.lerpTo(this.forestColor, t);
+    // } else if (height <= this.forestLevel && height > this.beachLevel) {
+    //   lerpedColor = this.forestColor.lerpTo(this.mountainColor, t);
+    // } else if (height <= this.mountainLevel && height > this.forestLevel) {
+    //   lerpedColor = this.mountainColor.lerpTo(this.snowColor, t);
+    // } else if (height > this.mountainLevel) {
+    //   lerpedColor = this.snowColor;
+    // } else {
+    //   lerpedColor = new Color(0, 0, 0);
+    // }
+
+    const lerpedColor = this.lowColor.lerpTo(this.highColor, t);
+
+    const square: Square = this.grid.drawSquare(
+      { x, y, z: 0 },
+      lerpedColor,
+      false
+    );
     this.grid.updateSquareHeight(square, Math.round(height), 0);
   }
 

@@ -6,6 +6,7 @@ import Square from './square';
 import { DisplayManager } from '../display/displaymanager';
 import { IGridPoint } from '../interfaces/grid-point.interface';
 import { GridDisplayObject } from './grid-display-object';
+import Color from '../utils/Color';
 
 const PIXI = require('pixi.js');
 
@@ -35,7 +36,7 @@ class Grid {
 
   drawSquare(
     coordinates: IGridPoint,
-    color: number,
+    color: Color,
     addToGrid: boolean = true
   ): Square {
     const square: Square = new Square({

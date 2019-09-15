@@ -1,10 +1,12 @@
-import { GridDisplayObject } from "./grid-display-object";
-import { IGridPoint } from "../interfaces/grid-point.interface";
-import { Graphics } from "pixi.js";
+import { GridDisplayObject } from './grid-display-object';
+
+import { IGridPoint } from '../interfaces/grid-point.interface';
+import { Graphics, utils } from 'pixi.js';
+import Color from '../utils/Color';
 
 class Square {
   private _height: number;
-  private color: number;
+  private color: Color;
   private graphics: GridDisplayObject;
   private graphicsInit: boolean;
   private lineWidth: number;
@@ -33,8 +35,8 @@ class Square {
     this.cacheGraphicsAsBitmap(false);
     this.clearSquare();
     this.drawSides();
-    this.square.beginFill(this.color);
-    this.square.lineStyle(this.lineWidth, this.lineColor, this.lineAlpha);
+    this.square.beginFill(this.color.toHex());
+    // this.square.lineStyle(this.lineWidth, this.lineColor, this.lineAlpha);
     this.square.moveTo(0, -this.height);
     this.square.lineTo(this.size, -this.size / 2 - this.height);
     this.square.lineTo(0, -this.size - this.height);
@@ -46,8 +48,11 @@ class Square {
   }
 
   drawSides() {
-    this.square.beginFill(this.color);
-    this.square.lineStyle(this.lineWidth, this.lineColor, this.lineAlpha);
+    // LEFT SIDE
+    // TODO : REfacto darken method
+    const darken = this.color.darken(20);
+    this.square.beginFill(darken.toHex());
+    // this.square.lineStyle(this.lineWidth, this.lineColor, this.lineAlpha);
     this.square.moveTo(0, 0);
     this.square.lineTo(-this.size, -this.size / 2);
     this.square.lineTo(-this.size, -this.size / 2 - this.height);
@@ -55,8 +60,10 @@ class Square {
     this.square.lineTo(0, 0);
     this.square.endFill();
 
-    this.square.beginFill(this.color);
-    this.square.lineStyle(this.lineWidth, this.lineColor, this.lineAlpha);
+    // RIGHT SIDE
+    const darker = this.color.darken(10);
+    this.square.beginFill(darker.toHex());
+    // this.square.lineStyle(this.lineWidth, this.lineColor, this.lineAlpha);
     this.square.moveTo(0, 0);
     this.square.lineTo(this.size, -this.size / 2);
     this.square.lineTo(this.size, -this.size / 2 - this.height);
@@ -79,9 +86,9 @@ class Square {
    */
   createGraphics(point: IGridPoint) {
     if (
-      typeof point.x === "undefined" ||
-      typeof point.y === "undefined" ||
-      typeof point.z === "undefined"
+      typeof point.x === 'undefined' ||
+      typeof point.y === 'undefined' ||
+      typeof point.z === 'undefined'
     ) {
       throw new Error(
         `Square.createGraphics: parameter 'point' has to have 'x', 'y' and 'z' properties`
