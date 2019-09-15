@@ -35,12 +35,10 @@ export default class CanvasContainer extends Component {
       antialias: true,
       transparent: true
     };
+    const renderer = PIXI.autoDetectRenderer(rendererOptions);
     // create application
-    app = new PIXI.Application(
-      window.innerWidth,
-      window.innerHeight,
-      rendererOptions
-    );
+    app = new PIXI.Application(window.innerWidth, window.innerHeight);
+    app.renderer = renderer;
     this.refs.canvasContainer.appendChild(app.view);
     // init resizing
     window.addEventListener('resize', this.resize);
