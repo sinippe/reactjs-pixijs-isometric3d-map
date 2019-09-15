@@ -8,16 +8,8 @@ import CustomDialog from '../CustomDialog/CustomDialog';
 
 const files = [
   {
-    name: 'Lyon (FR)',
-    file: 'lyon.json'
-  },
-  {
-    name: 'Grand Canyon',
-    file: 'grand_canyon.json'
-  },
-  {
-    name: 'Kilimanjaro',
-    file: 'kilimanjaro.json'
+    name: 'Bornholm',
+    file: 'bornholm.json'
   }
 ];
 
