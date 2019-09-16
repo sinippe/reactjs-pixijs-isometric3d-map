@@ -178,6 +178,10 @@ export default class MapSelector extends Component<Props, State> {
           this.mapArea.width = newWidth;
           this.mapArea.height = newHeight;
           this.fetchData(this.mapArea);
+          this.setState({
+            frameEnabled: false,
+            frameReady: false
+          });
         }
       }
     );
