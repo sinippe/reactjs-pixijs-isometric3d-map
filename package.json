@@ -2,7 +2,7 @@
   "name": "reactjs-pixijs-isometric3d-map",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://sinippe.com/isometric",
+  "homepage": ".",
   "dependencies": {
     "@material-ui/core": "^4.4.0",
     "classnames": "^2.2.6",
