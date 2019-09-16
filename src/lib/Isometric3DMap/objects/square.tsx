@@ -1,7 +1,7 @@
 import { GridDisplayObject } from './grid-display-object';
 
 import { IGridPoint } from '../interfaces/grid-point.interface';
-import { Graphics, utils } from 'pixi.js';
+import { Graphics } from 'pixi.js';
 import Color from '../utils/Color';
 
 class Square {
