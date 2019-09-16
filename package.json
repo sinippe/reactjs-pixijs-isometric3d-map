@@ -43,6 +43,6 @@
     "@types/react-slider": "^0.8.1",
     "@types/styled-components": "^4.1.18",
     "node-sass": "^4.11.0",
-    "typescript": "^3.5.2"
+    "typescript": "^3.6.2"
   }
 }
