@@ -9,6 +9,7 @@ import 'leaflet/dist/leaflet.css';
 // TODO: add a bouton "get data"
 type Props = {
   onFetchDataInit?: () => void;
+  onFetchDataError?: (error: string) => void;
   onFetchData: (data: JSON) => void;
 };
 
@@ -113,18 +114,24 @@ export default class MapSelector extends Component<Props, State> {
     }
   }
 
+  fetchDataError(error: string) {
+    if (this.props.onFetchDataError) {
+      this.props.onFetchDataError.call(this, error);
+    }
+  }
+
   fetchData(area: IMapArea) {
     const { lat, lng, width, height } = area;
     this.fetchDataInit();
-    fetch(
-      `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/data/${lat},${lng},${width},${height},50`
-    )
+    const url = `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/data/${lat},${lng},${width},${height},40`;
+    fetch(url)
       .then(async response => {
         const json = await response.json();
         this.props.onFetchData.call(this, json);
       })
       .catch((error: Error) => {
         console.log(`Error fetching data: ${error.message}`);
+        this.fetchDataError(error.message);
       });
   }
 
