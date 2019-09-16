@@ -35,7 +35,7 @@ export default class CanvasContainer extends Component {
       antialias: true,
       transparent: true
     };
-    const renderer = PIXI.autoDetectRenderer(rendererOptions);
+    const renderer = new PIXI.CanvasRenderer(rendererOptions);
     // create application
     app = new PIXI.Application(window.innerWidth, window.innerHeight);
     app.renderer = renderer;
