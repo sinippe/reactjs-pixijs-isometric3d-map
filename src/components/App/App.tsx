@@ -5,11 +5,20 @@ import styled from 'styled-components';
 import Progress from '../Progress/Progress';
 import MapSelector from '../MapSelector/MapSelector';
 import CustomDialog from '../CustomDialog/CustomDialog';
+import config from '../../config/infos.json';
 
 const files = [
   {
     name: 'Bornholm',
     file: 'bornholm.json'
+  },
+  {
+    name: 'Lyon',
+    file: 'lyon.json'
+  },
+  {
+    name: 'Bretagne',
+    file: 'bretagne.json'
   }
 ];
 
