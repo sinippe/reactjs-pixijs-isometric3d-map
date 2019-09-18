@@ -35,5 +35,5 @@ But you will have to find a solution to host the API on your own.
 
 ## Credits
 
-Many thanks to (Kaendor)[https://github.com/Kaendor] for his work on class (Color)[https://github.com/Kaendor/Color].
+Many thanks to [Kaendor](https://github.com/Kaendor) for his work on class **Color**: https://github.com/Kaendor/Color.
 If you're looking for a way to make linear interpolations between colors, you should check it out.
