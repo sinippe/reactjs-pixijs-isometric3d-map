@@ -22,5 +22,37 @@
     "width": 1.7248535156250004,
     "height": 1.2586417172296223,
     "steps": 40
+  },
+  {
+    "file": "kilimanjaro.json",
+    "latitude": -2.924525780082358,
+    "longitude": 37.23335266113282,
+    "width": 0.263671875,
+    "height": 0.29209071461463587,
+    "steps": 40
+  },
+  {
+    "file": "kotor.json",
+    "latitude": 42.53335026183043,
+    "longitude": 18.49754333496094,
+    "width": 0.298004150390625,
+    "height": 0.2174417187439559,
+    "steps": 40
+  },
+  {
+    "file": "lyon_old.json",
+    "latitude": 45.52602552010418,
+    "longitude": 4.788507275537313,
+    "width": 0.11,
+    "height": 0.084,
+    "steps": 40
+  },
+  {
+    "file": "lille.json",
+    "latitude": 50.66001718077061,
+    "longitude": 3.014888763427735,
+    "width": 0.08960723876953125,
+    "height": 0.05215356916070135,
+    "steps": 40
   }
 ]
