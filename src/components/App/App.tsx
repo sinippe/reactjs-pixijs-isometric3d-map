@@ -8,21 +8,6 @@ import CustomDialog from '../CustomDialog/CustomDialog';
 import MapMenu from '../MapMenu/MapMenu';
 import config from '../../config/infos.json';
 
-const files = [
-  {
-    name: 'Bornholm',
-    file: 'bornholm.json'
-  },
-  {
-    name: 'Lyon',
-    file: 'lyon.json'
-  },
-  {
-    name: 'Bretagne',
-    file: 'bretagne.json'
-  }
-];
-
 const ButtonToIsometric = styled.button`
   top: 1em;
   right: 1em;
@@ -41,7 +26,7 @@ const ButtonToMapMenu = styled.button`
 type Props = {};
 
 export default function App(props: Props) {
-  const [activeFile, setActiveFile] = useState(files[0].file);
+  const [activeFile, setActiveFile] = useState(config[0].file);
   const [mapData, setMapData] = useState<JSON | undefined>(undefined);
   const [displayMapSelector, setDisplayMapSelector] = useState(false);
   const [displayMapMenu, setDisplayMapMenu] = useState(false);
