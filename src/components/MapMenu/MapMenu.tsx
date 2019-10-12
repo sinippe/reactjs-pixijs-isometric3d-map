@@ -1,6 +1,6 @@
 import React from 'react';
-import { TileLayer, Marker } from 'react-leaflet';
-import { LatLngLiteral } from 'leaflet';
+import { TileLayer, Rectangle, PathProps } from 'react-leaflet';
+import { LatLngLiteral, LatLngBoundsExpression } from 'leaflet';
 import CustomMap from '../CustomMap/CustomMap';
 
 interface IMapArea {
@@ -26,30 +26,38 @@ const defaultPosition: LatLngLiteral = {
   lng: -0.09
 };
 
+const getBoundsFromMapArea = (area: IMapArea): LatLngBoundsExpression => {
+  return [
+    [area.latitude, area.longitude],
+    [area.latitude - area.height, area.longitude + area.width]
+  ];
+};
+
 export default function MapMenu(props: MapMenuProps) {
   const position: LatLngLiteral = {
     lat: props.lat ? props.lat : defaultPosition.lat,
     lng: props.lng ? props.lng : defaultPosition.lng
   };
 
-  const getAreaCenterPoint = (area: IMapArea): LatLngLiteral => {
-    return {
-      lat: area.latitude + area.height / 2,
-      lng: area.longitude + area.width / 2
-    };
+  const pathProps: PathProps = {
+    fillColor: '#ffffff',
+    stroke: true,
+    weight: 4,
+    color: '#d03030'
   };
 
   return (
     <>
       <CustomMap className="map-component" center={position} zoom={5}>
         {props.areas.map((area, index) => (
-          <Marker
-            key={`marker_${index}`}
-            position={getAreaCenterPoint(area)}
+          <Rectangle
+            key={`rectangle_${index}`}
+            bounds={getBoundsFromMapArea(area)}
+            {...pathProps}
             onClick={() => {
               props.onClickCallback.call(null, area.file);
             }}
-          ></Marker>
+          ></Rectangle>
         ))}
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
