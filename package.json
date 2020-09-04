@@ -42,7 +42,7 @@
     "@types/react-leaflet": "^2.4.0",
     "@types/react-slider": "^0.8.1",
     "@types/styled-components": "^4.1.18",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.13.1",
     "typescript": "^3.6.2"
   }
 }
