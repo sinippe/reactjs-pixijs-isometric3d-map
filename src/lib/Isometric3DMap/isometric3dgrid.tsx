@@ -72,10 +72,12 @@ class Isometric3DGrid {
       mapLength: 0
     };
     // Color setting
-    this.lowColor = new Color(255, 255, 128);
-    this.highColor = new Color(179, 179, 255);
+    //this.lowColor = new Color(255, 255, 128);
+    //this.highColor = new Color(179, 179, 255);
+    this.lowColor = new Color(159, 126, 70);
+    this.highColor = new Color(55, 124, 35);
 
-    this.waterColor = new Color(102, 102, 255);
+    this.waterColor = new Color(35, 72, 207);
     this.beachColor = new Color(255, 255, 179);
     this.forestColor = new Color(0, 179, 0);
     this.mountainColor = new Color(153, 102, 51);
@@ -201,7 +203,9 @@ class Isometric3DGrid {
     //   lerpedColor = new Color(0, 0, 0);
     // }
 
-    const lerpedColor = this.lowColor.lerpTo(this.highColor, t);
+    //const lerpedColor = this.lowColor.lerpTo(this.highColor, t);
+    const lerpedColor =
+      t === 0 ? this.waterColor : this.lowColor.lerpTo(this.highColor, t);
 
     const square: Square = this.grid.drawSquare(
       { x, y, z: 0 },

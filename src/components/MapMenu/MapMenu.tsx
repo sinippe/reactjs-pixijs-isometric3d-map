@@ -15,8 +15,8 @@ interface IMapAreaFile extends IMapArea {
 }
 
 type MapMenuProps = {
-  lat: number | undefined;
-  lng: number | undefined;
+  lat?: number;
+  lng?: number;
   areas: IMapAreaFile[];
   onClickCallback: (file: string) => void;
 };

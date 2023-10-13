@@ -123,8 +123,10 @@ export default class MapSelector extends Component<Props, State> {
   fetchData(area: IMapArea) {
     const { lat, lng, width, height } = area;
     this.fetchDataInit();
-    const url = `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/data/${lat},${lng},${width},${height},40`;
-    fetch(url)
+    // const url = `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/data/${lat},${lng},${width},${height},40`;
+    // NOTE: for local use
+    const url = `/data/${lat},${lng},${width},${height},40`
+    fetch(url, {credentials: "include"})
       .then(async response => {
         const json = await response.json();
         this.props.onFetchData.call(this, json);

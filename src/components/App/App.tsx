@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  ReducerAction,
+  useReducer,
+  Reducer
+} from 'react';
 import styled from 'styled-components';
 import './App.scss';
 import CanvasContainer from '../CanvasContainer/CanvasContainer';
@@ -15,8 +22,8 @@ const ButtonToIsometric = styled.button`
 const ButtonToMapSelector = styled.button`
   top: 4em;
   left: 1em;
-  cursor: not-allowed !important;
-  opacity: 0.5;
+  /*cursor: not-allowed !important;*/
+  /*opacity: 0.5;*/
 `;
 const ButtonToMapMenu = styled.button`
   top: 1em;
@@ -25,82 +32,160 @@ const ButtonToMapMenu = styled.button`
 
 type Props = {};
 
+type DisplayType = 'mapSelector' | 'mapMenu' | 'canvas';
+
+type State = {
+  activeFile: string;
+  mapData: JSON | undefined;
+  currentDisplay: DisplayType;
+  mapVisits: number;
+  isLoading: boolean;
+};
+
+type Action =
+  | { type: 'setMapData'; mapData: JSON }
+  | { type: 'setActiveFile'; activeFile: string }
+  | { type: 'initMapDataLoading' }
+  | { type: 'setCurrentDisplay'; currentDisplay: DisplayType }
+  | { type: 'increaseMapVisits' };
+
+const initState: State = {
+  activeFile: config[0].file,
+  mapData: undefined,
+  currentDisplay: 'canvas',
+  mapVisits: 0,
+  isLoading: false
+};
+
+const reducer = (prevState: State, action: Action) => {
+  switch (action.type) {
+    case 'setMapData':
+      return {
+        ...prevState,
+        isLoading: false,
+        mapData: action.mapData,
+        currentDisplay: 'canvas' as DisplayType
+        //currentDisplay: 'canvas'
+      };
+    case 'setActiveFile':
+      return {
+        ...prevState,
+        activeFile: action.activeFile,
+        currentDisplay: 'canvas' as DisplayType
+      };
+    case 'initMapDataLoading':
+      return {
+        ...prevState,
+        isLoading: true
+      };
+    case 'setCurrentDisplay':
+      return {
+        ...prevState,
+        currentDisplay: action.currentDisplay
+      };
+    case 'increaseMapVisits':
+      return {
+        ...prevState,
+        mapVisits: prevState.mapVisits + 1
+      };
+    default:
+      return prevState;
+  }
+};
+
 export default function App(props: Props) {
+  useEffect(() => {
+    fetch("/data/51.549751017014195,-0.2032470703125,0.17852783203125,0.09403262660602252,40")
+  }, [])
+  console.log({process})
+  // FIXME: to many states here, make a reducer please :) <3
+  /*
   const [activeFile, setActiveFile] = useState(config[0].file);
   const [mapData, setMapData] = useState<JSON | undefined>(undefined);
   const [displayMapSelector, setDisplayMapSelector] = useState(false);
   const [displayMapMenu, setDisplayMapMenu] = useState(false);
   const [mapVisits, setMapVisits] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  */
 
-  const onMapData = (data: JSON) => {
-    setIsLoading(false);
-    setMapData(data);
+  const [
+    { isLoading, mapData, activeFile, currentDisplay, mapVisits },
+    dispatch
+  ] = useReducer<Reducer<State, Action>>(reducer, initState);
+
+  const onMapDataLoadInit = () => {
+    dispatch({ type: 'initMapDataLoading' });
   };
 
-  const handleMapMenuClick = useCallback(file => {
+  const onMapData = (data: JSON) => {
+    dispatch({ type: 'setMapData', mapData: data });
+    //setIsLoading(false);
+    //setMapData(data);
+  };
+
+  const onChangeDisplay = (display: DisplayType) => () => {
+    dispatch({ type: 'setCurrentDisplay', currentDisplay: display });
+  };
+
+  /*
+  const handleMapMenuClick = useCallback((file) => {
     setActiveFile(file);
     setDisplayMapMenu(false);
     setDisplayMapSelector(false);
   }, []);
-
+  */
+  const handleMapMenuClick = (file: string) => {
+    dispatch({ type: 'setActiveFile', activeFile: file });
+  };
+  /*
   useEffect(() => {
     setDisplayMapSelector(false);
     setDisplayMapMenu(false);
     setIsLoading(false);
   }, [mapData]);
-
+*/
   useEffect(() => {
-    if (displayMapSelector) {
+    if (currentDisplay === 'mapSelector') {
       return () => {
-        setMapVisits(mapVisits + 1);
+        dispatch({ type: 'increaseMapVisits' });
       };
     }
-  }, [displayMapSelector, mapVisits]);
+  }, [currentDisplay, mapVisits]);
 
   return (
     <>
-      {isLoading && <Progress></Progress>}
-      {displayMapSelector && mapVisits === 0 && (
+      {isLoading && <Progress />}
+      {currentDisplay === 'mapSelector' && mapVisits === 0 && (
         <CustomDialog content="Drag around the map to select the area to render. Click once to start drawing the area. Click once more to end drawing."></CustomDialog>
       )}
-      {(displayMapSelector || displayMapMenu) && (
+      {(currentDisplay === 'mapSelector' || currentDisplay === 'mapMenu') && (
         <ButtonToIsometric
           className="switch-view"
-          onClick={() => {
-            setDisplayMapSelector(false);
-            setDisplayMapMenu(false);
-          }}
+          onClick={onChangeDisplay('canvas')}
         >
           Isometric 3d View &gt;
         </ButtonToIsometric>
       )}
-      {displayMapMenu && (
+      {currentDisplay === 'mapMenu' && (
         <MapMenu areas={config} onClickCallback={handleMapMenuClick}></MapMenu>
       )}
-      {displayMapSelector && (
+      {currentDisplay === 'mapSelector' && (
         <MapSelector
-          onFetchDataInit={() => {
-            setIsLoading(true);
-          }}
+          onFetchDataInit={onMapDataLoadInit}
           onFetchData={onMapData}
         />
       )}
-      {!displayMapSelector && !displayMapMenu && (
+      {currentDisplay === 'canvas' && (
         <>
           <ButtonToMapSelector
             className="switch-view inverted"
-            /*onClick={() => {
-              setDisplayMapSelector(true);
-            }}*/
+            onClick={onChangeDisplay('mapSelector')}
           >
             &lt; Map selector
           </ButtonToMapSelector>
           <ButtonToMapMenu
             className="switch-view inverted"
-            onClick={() => {
-              setDisplayMapMenu(true);
-            }}
+            onClick={onChangeDisplay('mapMenu')}
           >
             &lt; Map
           </ButtonToMapMenu>
